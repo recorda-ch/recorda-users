@@ -1,0 +1,11 @@
+mongodb:
+  image: mongo
+  container_name: recardo-mongo
+  ports:
+    - "27017:27017"
+
+mongo-provisioning:
+  build: ./mongo-provisioning
+  container_name: recardo-provisioning
+  links:
+    - mongodb

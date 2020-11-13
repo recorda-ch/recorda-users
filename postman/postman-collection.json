@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "41926d0e-cbdf-44c3-aa1a-af30a21d669e",
+		"name": "Recorda Users Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CREATE",
+			"description": null,
+			"item": [
+				{
+					"name": "Create a User James Gosling",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstname\": \"James\",\r\n\t\"lastname\": \"Gosling\",\r\n\t\"email\": \"james.gosling@java.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"10 Place de Jargonnant, 1207 Genève\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "READ",
+			"description": "",
+			"item": [
+				{
+					"name": "GET user James Gosling",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstName\": \"John Doe\",\r\n\t\"email\": \"john.doe@recardo.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"1 Place de Jargonnant, 1207 Genève\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/-4997381445852967165",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								"-4997381445852967165"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET all users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstName\": \"John Doe\",\r\n\t\"email\": \"john.doe@recardo.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"1 Place de Jargonnant, 1207 Genève\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/all",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by Email",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstName\": \"John Doe\",\r\n\t\"email\": \"john.doe@recardo.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"1 Place de Jargonnant, 1207 Genève\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/byEmail/james.gosling@java.com",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								"byEmail",
+								"james.gosling@java.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by Name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstName\": \"John Doe\",\r\n\t\"email\": \"john.doe@recardo.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"1 Place de Jargonnant, 1207 Genève\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/byName/john.doe@recardo.com",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								"byName",
+								"john.doe@recardo.com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UPDATE",
+			"description": "",
+			"item": [
+				{
+					"name": "Update name",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstname\": \"Johnny\",\r\n\t\"password\": \"changed\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/5fae60a5e38efd09d8557465",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								"5fae60a5e38efd09d8557465"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "01246ad6-c14c-4965-aff7-1745bca9ffe5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a4477127-ad05-4463-ab91-39f0e3220873",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

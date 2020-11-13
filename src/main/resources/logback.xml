@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+    <property resource="logback.properties" />
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${appLogDir}/users-management.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${appLogDir}/complaint-api-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${maxSizeFile}</maxFileSize>
+            <maxHistory>${maxDaysOfHistory}</maxHistory>
+            <totalSizeCap>${maxTotalSize}</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} %logger - %msg %n</pattern>
+        </encoder>
+
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${appThreshold}</level>
+        </filter>
+
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} %logger - %msg %n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${appThreshold}</level>
+        </filter>
+    </appender>
+
+
+    <logger name="com.recorda.admin.users" additivity="false" level="TRACE">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>
