@@ -80,7 +80,7 @@ To run the demo, you will have to :
 
 ### 1) Running the containers
 ```bash
-$ docker run --name recardo-mongo -d mongo:latest
+$ docker-compose up -d
 $ ...
 ```
 ### 2) Running the application
