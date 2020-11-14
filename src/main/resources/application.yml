@@ -3,6 +3,8 @@ server:
   port: 8081
   servlet:
     contextPath: /recorda/admin
+  error:
+    include-message: always
 
 # MongoDB application configuration
 mongodb:
@@ -16,3 +18,7 @@ spring:
       database: recardo
       port: 27017
       host: localhost
+
+# i18n configuration
+i18n:
+  locale: fr

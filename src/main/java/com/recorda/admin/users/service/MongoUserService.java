@@ -1,10 +1,13 @@
 package com.recorda.admin.users.service;
 
 import com.mongodb.client.result.UpdateResult;
+import com.recorda.admin.users.exception.UserException;
+import com.recorda.admin.users.i18n.MessageResolver;
 import com.recorda.admin.users.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Provides a {@link UserService} implementation based on MongoDB datastore
@@ -25,8 +29,33 @@ public class MongoUserService implements UserService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private MessageResolver messageResolver;
+
     @Override
-    public User updateMultiple(String id, HashMap<String, String> fields) {
+    public User add(User user) throws UserException {
+
+        /*
+         * RULE : an email is related to a single user
+         *
+         * Check whether there is already a user with provided email
+         */
+        List<User> matchingUsers = findByEmail(user.getEmail());
+        if ( matchingUsers != null && matchingUsers.size() > 0) {
+            String errorMessage = messageResolver.getContent("business.error.user.dupplicate.email", new Object[] { user.getEmail() });
+            throw new UserException(errorMessage);
+        }
+
+        return mongoTemplate.save(user);
+    }
+
+    @Override
+    public User update(User user) {
+        return null;
+    }
+
+    @Override
+    public User partialUpdate(String id, HashMap<String, String> fields) {
         Query query = new Query(new Criteria("id").is(id));
         Update update = new Update();
 
@@ -40,16 +69,6 @@ public class MongoUserService implements UserService {
         mongoTemplate.updateFirst(query, update, User.class);
 
         return findById(id);
-    }
-
-    @Override
-    public User add(User user) {
-        return mongoTemplate.save(user);
-    }
-
-    @Override
-    public User update(User user) {
-        return null;
     }
 
     @Override

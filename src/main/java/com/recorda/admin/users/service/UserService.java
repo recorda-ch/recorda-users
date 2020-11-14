@@ -1,6 +1,6 @@
 package com.recorda.admin.users.service;
 
-import com.mongodb.client.result.UpdateResult;
+import com.recorda.admin.users.exception.BusinessException;
 import com.recorda.admin.users.model.User;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public interface UserService {
      * @param fields map of fields (name and value)
      * @return updated user
      */
-    User updateMultiple(String id, HashMap<String, String> fields);
+    User partialUpdate(String id, HashMap<String, String> fields) throws BusinessException;
 
     /**
      * Creates a new user
@@ -26,7 +26,7 @@ public interface UserService {
      * @param user new user to be created
      * @return the new whole user
      */
-    User add(User user);
+    User add(User user) throws BusinessException;
 
 
     /**
@@ -34,21 +34,21 @@ public interface UserService {
      * @param user to update
      * @return updated user
      */
-    User update(User user);
+    User update(User user) throws BusinessException;
 
     /**
      * Find all users
      *
      * @return a list of users
      */
-    List<User> findAll();
+    List<User> findAll() throws BusinessException;
 
     /**
      * Finds a user given its id
      * @param id user id
      * @return a matching user if any
      */
-    User findById(String id);
+    User findById(String id) throws BusinessException;
 
     /**
      * Finds a user given its email
@@ -56,7 +56,7 @@ public interface UserService {
      * @param email user email
      * @return list of matching users
      */
-    List<User> findByEmail(String email);
+    List<User> findByEmail(String email) throws BusinessException;
 
     /**
      * Finds a user given its name
@@ -64,5 +64,5 @@ public interface UserService {
      * @param name user name
      * @return list of matching users
      */
-    List<User> findByName(String name);
+    List<User> findByName(String name) throws BusinessException;
 }

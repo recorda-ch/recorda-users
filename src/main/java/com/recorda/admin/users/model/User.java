@@ -4,11 +4,17 @@ package com.recorda.admin.users.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
+
 /**
  * This is a User for Recardo e-commerce platform
+ *
+ * The MongoDB collection name is provided in YAML file.
  */
 @Document(collection = "#{@environment.getProperty('mongodb.users.collection')}")
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -5790264243906182678L;
 
     @Id
     private String id;
