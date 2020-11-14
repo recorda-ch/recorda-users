@@ -42,6 +42,7 @@ public class MongoUserService implements UserService {
          */
         List<User> matchingUsers = findByEmail(user.getEmail());
         if ( matchingUsers != null && matchingUsers.size() > 0) {
+            logger.debug(String.format("Found a user with email: %s", user.getEmail()));
             String errorMessage = messageResolver.getContent("business.error.user.dupplicate.email", new Object[] { user.getEmail() });
             throw new UserException(errorMessage);
         }
