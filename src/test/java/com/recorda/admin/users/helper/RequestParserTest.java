@@ -1,6 +1,5 @@
-package com.recorda.admin.users.helpers;
+package com.recorda.admin.users.helper;
 
-import com.recorda.admin.users.service.UserService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,14 +8,14 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Unit tests the user information helper ({@link ClientParser}
+ * Unit tests the user information helper ({@link RequestParser}
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ClientParserTest {
+public class RequestParserTest {
 
     private MockHttpServletRequest httpRequest;
 
-    private ClientParser clientParser = new ClientParser();
+    private RequestParser requestParser = new RequestParser();
 
     @Before
     public void before() {
@@ -30,7 +29,7 @@ public class ClientParserTest {
         httpRequest.addHeader("X-FORWARDED-FOR", "8.8.8.8");
 
         // Test and assert
-        Assert.assertEquals("8.8.8.8", clientParser.getIpAddress(httpRequest));
+        Assert.assertEquals("8.8.8.8", requestParser.getIpAddress(httpRequest));
     }
 
     @Test
@@ -40,7 +39,7 @@ public class ClientParserTest {
         httpRequest.setRemoteAddr("8.8.8.8");
 
         // Test and assert
-        Assert.assertEquals("8.8.8.8", clientParser.getIpAddress(httpRequest));
+        Assert.assertEquals("8.8.8.8", requestParser.getIpAddress(httpRequest));
     }
     @Test
     public void getIpAddress_testCaseInsensitive() {
@@ -49,7 +48,7 @@ public class ClientParserTest {
         httpRequest.addHeader("X-Forwarded-For", "8.8.8.8");
 
         // Test and assert
-        Assert.assertEquals("8.8.8.8", clientParser.getIpAddress(httpRequest));
+        Assert.assertEquals("8.8.8.8", requestParser.getIpAddress(httpRequest));
     }
 
     @Test
@@ -60,7 +59,7 @@ public class ClientParserTest {
         httpRequest.setRemoteAddr("9.9.9.9");
 
         // Test and assert
-        Assert.assertEquals("8.8.8.8", clientParser.getIpAddress(httpRequest));
+        Assert.assertEquals("8.8.8.8", requestParser.getIpAddress(httpRequest));
     }
 
 }

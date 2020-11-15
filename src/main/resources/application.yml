@@ -22,3 +22,8 @@ spring:
 # i18n configuration
 i18n:
   locale: fr
+
+# APIs
+api:
+  ipapi:
+    uri: https://ipapi.co

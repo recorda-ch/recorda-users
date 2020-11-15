@@ -1,7 +1,10 @@
 package com.recorda.admin.users.service;
 
 import com.recorda.admin.users.exception.BusinessException;
+import com.recorda.admin.users.exception.FeatureException;
+import com.recorda.admin.users.exception.TechnicalException;
 import com.recorda.admin.users.exception.UserException;
+import com.recorda.admin.users.filter.LocationFilter;
 import com.recorda.admin.users.i18n.MessageResolver;
 import com.recorda.admin.users.model.User;
 import org.junit.Test;
@@ -31,16 +34,20 @@ public class UserServiceTest {
     @Mock
     MessageResolver messageResolver;
 
+    @Mock
+    LocationFilter locationFilter;
+
     @InjectMocks
     MongoUserService userService;
 
     @Test
-    public void testAdd_Nominal() throws BusinessException {
+    public void testAdd_Nominal() throws BusinessException, TechnicalException {
 
         // Forge a User (no matter of field valorization for this test)
         User user = new User();
 
         // Simulating that there is no user with matching email
+        when(locationFilter.filter(any())).thenReturn(true);
         when(mongoTemplate.find(any(),any())).thenReturn(null);
 
         // Invoke service method
@@ -51,17 +58,36 @@ public class UserServiceTest {
     }
 
     /**
-     * Here we test "RULE : an email is related to a single user"
+     * Here we test "RULE 2 : an email is related to a single user"
      *
      * @throws BusinessException
      */
-    @Test(expected = UserException.class)
-    public void testAdd_withExistingUser() throws BusinessException {
+    @Test(expected = FeatureException.class)
+    public void testAdd_withNotAllowedUser() throws BusinessException, TechnicalException {
 
         // Forge a User (no matter of field valorization for this test)
         User user = new User();
 
         // Simulating that a user with matching email has been found
+        when(locationFilter.filter(any())).thenReturn(false);
+
+        // Invoke service method
+        userService.add(user);
+    }
+
+    /**
+     * Here we test "RULE 2 : an email is related to a single user"
+     *
+     * @throws BusinessException
+     */
+    @Test(expected = UserException.class)
+    public void testAdd_withExistingUser() throws BusinessException, TechnicalException {
+
+        // Forge a User (no matter of field valorization for this test)
+        User user = new User();
+
+        // Simulating that a user with matching email has been found
+        when(locationFilter.filter(any())).thenReturn(true);
         when(mongoTemplate.find(any(),any())).thenReturn(Stream.of(new User()).collect(toCollection(ArrayList::new)));
 
         // Invoke service method

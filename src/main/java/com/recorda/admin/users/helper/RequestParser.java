@@ -1,4 +1,4 @@
-package com.recorda.admin.users.helpers;
+package com.recorda.admin.users.helper;
 
 import org.springframework.stereotype.Component;
 
@@ -8,14 +8,14 @@ import javax.servlet.http.HttpServletRequest;
  * A class responsible for parsing several information concerning client
  */
 @Component
-public class ClientParser {
+public class RequestParser {
 
-    public String getIpAddress(HttpServletRequest request) {
+    public String getIpAddress(HttpServletRequest req) {
         String ip = null;
-        if (request != null) {
-            ip = request.getHeader("X-FORWARDED-FOR");
+        if (req != null) {
+            ip = req.getHeader("x-forwarded-for");
             if (ip == null || "".equals(ip)) {
-                ip = request.getRemoteAddr();
+                ip = req.getRemoteAddr();
             }
         }
         return ip;

@@ -2,6 +2,7 @@ package com.recorda.admin.users.model;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -28,6 +29,9 @@ public class User implements Serializable {
     private String password;
 
     private String address;
+
+    @Transient /* do not persist IP field */
+    private String ip;
 
     @Override
     public String toString() {
@@ -84,5 +88,13 @@ public class User implements Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

@@ -103,7 +103,7 @@ You can check the results of the demo in several ways :
  - ### Checking results in MongoDB datastore  
 You can users in MongoDB NoSQL datastore (*Documents*) with the [Mongo Shell](https://docs.mongodb.com/manual/mongo/), directly inside its dedicated docker container as below :  
 ```bash  
-$ $ docker exec -it recardo-mongo /bin/bash  
+$ docker exec -it recardo-mongo /bin/bash  
 $ mongo  
 > use recardo;  
 > db.users.find();  

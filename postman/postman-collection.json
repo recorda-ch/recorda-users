@@ -10,7 +10,44 @@
 			"description": null,
 			"item": [
 				{
-					"name": "Create a User James Gosling",
+					"name": "ADD a User (James Gosling) / ALLOWED",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "x-forwarded-for",
+								"value": "46.14.0.12"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstname\": \"James\",\r\n\t\"lastname\": \"Gosling\",\r\n\t\"email\": \"james.gosling@java.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"10 Place de Jargonnant, 1207 Genève\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD a User / NOT ALLOWED",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -49,7 +86,7 @@
 			"description": "",
 			"item": [
 				{
-					"name": "GET user James Gosling",
+					"name": "FIND a User by Id",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -82,7 +119,7 @@
 					"response": []
 				},
 				{
-					"name": "GET all users",
+					"name": "FIND all Users",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -115,7 +152,7 @@
 					"response": []
 				},
 				{
-					"name": "Find by Email",
+					"name": "FIND a User by Email",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -149,7 +186,7 @@
 					"response": []
 				},
 				{
-					"name": "Find by Name",
+					"name": "FIND a User by Name",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -167,7 +204,7 @@
 							"raw": "{\r\n\t\"firstName\": \"John Doe\",\r\n\t\"email\": \"john.doe@recardo.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"1 Place de Jargonnant, 1207 Genève\"\r\n}"
 						},
 						"url": {
-							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/byName/john.doe@recardo.com",
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/byName/gosling",
 							"protocol": "{{httpType}}",
 							"host": [
 								"{{host-admin}}"
@@ -176,7 +213,7 @@
 							"path": [
 								"{{apiRoot}}",
 								"byName",
-								"john.doe@recardo.com"
+								"gosling"
 							]
 						}
 					},
@@ -189,7 +226,7 @@
 			"description": "",
 			"item": [
 				{
-					"name": "Update name",
+					"name": "UPDATE PARTIAL name",
 					"request": {
 						"method": "PATCH",
 						"header": [

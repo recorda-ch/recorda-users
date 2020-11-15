@@ -41,4 +41,5 @@ public class Application {
 		rbm.setBasename("msg.message");
 		return rbm;
 	}
+
 }

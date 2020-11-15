@@ -1,8 +1,10 @@
 package com.recorda.admin.users.resource;
 
 import com.recorda.admin.users.exception.BusinessException;
+import com.recorda.admin.users.exception.FeatureException;
+import com.recorda.admin.users.exception.TechnicalException;
 import com.recorda.admin.users.exception.UserException;
-import com.recorda.admin.users.helpers.ClientParser;
+import com.recorda.admin.users.helper.RequestParser;
 import com.recorda.admin.users.model.User;
 import com.recorda.admin.users.service.UserService;
 import org.slf4j.Logger;
@@ -26,23 +28,29 @@ public class UserResource {
     private static final Logger logger = LoggerFactory.getLogger(UserResource.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ClientParser clientParser;
+    private RequestParser requestParser;
 
     @ResponseBody
     @PostMapping
-    public User create(@RequestBody User user, HttpServletRequest request) {
+    public User create(@RequestBody User user, HttpServletRequest req) {
 
         try {
-            logger.debug(String.format("user IP is: %s",clientParser.getIpAddress(request)));
+            // Set IP on user
+            user.setIp(requestParser.getIpAddress(req));
+
             return userService.add(user);
 
         } catch (UserException ue) {
-            throw new ResponseStatusException(HttpStatus.ALREADY_REPORTED, ue.getMessage(), ue);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ue.getMessage(), ue);
+        } catch (FeatureException ue) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, ue.getMessage(), ue);
         } catch (BusinessException ue) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ue.getMessage(), ue);
+        } catch (TechnicalException ue) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, ue.getMessage(), ue);
         }
     }
 

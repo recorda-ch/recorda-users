@@ -1,6 +1,7 @@
 package com.recorda.admin.users.service;
 
 import com.recorda.admin.users.exception.BusinessException;
+import com.recorda.admin.users.exception.TechnicalException;
 import com.recorda.admin.users.model.User;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public interface UserService {
      * @param user new user to be created
      * @return the new whole user
      */
-    User add(User user) throws BusinessException;
+    User add(User user) throws BusinessException, TechnicalException;
 
 
     /**

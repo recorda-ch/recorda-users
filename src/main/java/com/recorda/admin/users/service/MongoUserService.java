@@ -1,13 +1,15 @@
 package com.recorda.admin.users.service;
 
-import com.mongodb.client.result.UpdateResult;
+import com.recorda.admin.users.exception.BusinessException;
+import com.recorda.admin.users.exception.FeatureException;
+import com.recorda.admin.users.exception.TechnicalException;
 import com.recorda.admin.users.exception.UserException;
+import com.recorda.admin.users.filter.LocationFilter;
 import com.recorda.admin.users.i18n.MessageResolver;
 import com.recorda.admin.users.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Provides a {@link UserService} implementation based on MongoDB datastore
@@ -32,19 +33,28 @@ public class MongoUserService implements UserService {
     @Autowired
     private MessageResolver messageResolver;
 
+    @Autowired
+    private LocationFilter locationFilter;
+
     @Override
-    public User add(User user) throws UserException {
+    public User add(User user) throws BusinessException, TechnicalException {
 
         /*
-         * RULE : an email is related to a single user
+         * RULE 1 : only user requesting from Switzerland are authorized to add users
+         */
+        if (!locationFilter.filter(user)) {
+            throw new FeatureException(messageResolver.getContent("business.error.user.ip.not.eligible", null));
+        }
+
+        /*
+         * RULE 2 : an email is related to a single user
          *
          * Check whether there is already a user with provided email
          */
         List<User> matchingUsers = findByEmail(user.getEmail());
         if ( matchingUsers != null && matchingUsers.size() > 0) {
             logger.debug(String.format("Found a user with email: %s", user.getEmail()));
-            String errorMessage = messageResolver.getContent("business.error.user.dupplicate.email", new Object[] { user.getEmail() });
-            throw new UserException(errorMessage);
+            throw new UserException(messageResolver.getContent("business.error.user.dupplicate.email", new Object[] { user.getEmail() }));
         }
 
         return mongoTemplate.save(user);
@@ -100,7 +110,7 @@ public class MongoUserService implements UserService {
 
         // Forge query for filtering
         Query query = new Query();
-        query.addCriteria(Criteria.where("firstname").is(name));
+        query.addCriteria(Criteria.where("lastname").is(name));
 
         // Querying
         List<User> users = mongoTemplate.find(query,User.class);

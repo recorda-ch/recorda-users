@@ -1,6 +1,8 @@
 package com.recorda.admin.users.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.recorda.admin.users.exception.UserException;
+import com.recorda.admin.users.helper.RequestParser;
 import com.recorda.admin.users.model.User;
 import com.recorda.admin.users.service.UserService;
 import org.junit.Test;
@@ -33,10 +35,13 @@ public class UserResourceTest {
     @MockBean
     UserService userService;
 
+    @MockBean
+    RequestParser requestParser;
+
     @Test
     public void testCreate_Nominal() throws Exception {
 
-        // Forge request (no matter field : response is mocked)
+        // Forge request (we do not care about the fields : response is mocked)
         User requestBody = new User();
 
         // Forge mock response
@@ -56,11 +61,32 @@ public class UserResourceTest {
         this.mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest))
-                // .andDo(print())
+                //.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id", is(equalTo("12345"))))
                 .andExpect(jsonPath("firstname", is(equalTo("Doug"))))
                 .andExpect(jsonPath("lastname", is(equalTo("Lea"))));
     }
 
+    @Test
+    public void testCreate_whenUserException() throws Exception {
+
+        // Forge request (we do not care about the fields...)
+        User requestBody = new User();
+        requestBody.setEmail("doug.lea@java.net");
+        String jsonRequest = new ObjectMapper().writeValueAsString(requestBody);
+
+        // Forge mock response (we do not care about the fields...)
+        User responseBody = new User();
+
+        // Forge mock behavior
+        when(userService.add(any())).thenThrow(new UserException("(no matter))"));
+
+        // Invoke API and check
+        this.mockMvc.perform(post("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest))
+                //.andDo(print())
+                .andExpect(status().isConflict());
+    }
 }
