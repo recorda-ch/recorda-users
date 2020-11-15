@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * A class responsible for parsing several information concerning client
  */
-@Component
+@Deprecated
 public class RequestParser {
 
     public String getIpAddress(HttpServletRequest req) {

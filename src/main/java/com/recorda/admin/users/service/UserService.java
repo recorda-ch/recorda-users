@@ -13,6 +13,24 @@ import java.util.List;
 public interface UserService {
 
     /**
+     * Entire update on a user resource
+     * @param user to update
+     * @return updated user
+     */
+    default User update(String id, User user) throws BusinessException {
+
+        // Provided new values for all fields (except id)
+        HashMap<String, String> allFields = new HashMap<>();
+        allFields.put("firstname", user.getFirstname());
+        allFields.put("lastname", user.getLastname());
+        allFields.put("email", user.getEmail());
+        allFields.put("password", user.getPassword());
+        allFields.put("address", user.getAddress());
+
+        return partialUpdate(id,allFields);
+    }
+
+    /**
      * Partial update on multiple fields
      *
      * @param id user id
@@ -28,14 +46,6 @@ public interface UserService {
      * @return the new whole user
      */
     User add(User user) throws BusinessException, TechnicalException;
-
-
-    /**
-     * Entire update on a user resource
-     * @param user to update
-     * @return updated user
-     */
-    User update(User user) throws BusinessException;
 
     /**
      * Find all users

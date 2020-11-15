@@ -2,6 +2,7 @@ package com.recorda.admin.users.helper;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Unit tests the user information helper ({@link RequestParser}
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@Ignore
 public class RequestParserTest {
 
     private MockHttpServletRequest httpRequest;

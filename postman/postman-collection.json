@@ -21,15 +21,11 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
-							},
-							{
-								"key": "x-forwarded-for",
-								"value": "46.14.0.12"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"firstname\": \"James\",\r\n\t\"lastname\": \"Gosling\",\r\n\t\"email\": \"james.gosling@java.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"10 Place de Jargonnant, 1207 Genève\"\r\n}"
+							"raw": "{\r\n\t\"firstname\": \"James\",\r\n\t\"lastname\": \"Gosling\",\r\n\t\"email\": \"james.gosling@java.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"10 Place de Jargonnant, 1207 Genève\",\r\n\t\"ip\": \"46.14.0.12\"\r\n}"
 						},
 						"url": {
 							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/",
@@ -47,7 +43,40 @@
 					"response": []
 				},
 				{
-					"name": "ADD a User / NOT ALLOWED",
+					"name": "ADD a User / NOT ALLOWED / Not in CH",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstname\": \"James\",\r\n\t\"lastname\": \"Gosling\",\r\n\t\"email\": \"james.gosling@java.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"10 Place de Jargonnant, 1207 Genève\",\r\n\t\"ip\": \"127.0.0.1\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD a User / NOT ALLOWED / No IP provided",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -226,7 +255,7 @@
 			"description": "",
 			"item": [
 				{
-					"name": "UPDATE PARTIAL name",
+					"name": "UPDATE PARTIAL only firstname",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -241,10 +270,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"firstname\": \"Johnny\",\r\n\t\"password\": \"changed\"\r\n}"
+							"raw": "{\r\n\t\"firstname\": \"Ryan\"\r\n}"
 						},
 						"url": {
-							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/5fae60a5e38efd09d8557465",
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/5fb13f1b38e6e372553473a1",
 							"protocol": "{{httpType}}",
 							"host": [
 								"{{host-admin}}"
@@ -252,7 +281,112 @@
 							"port": "{{port}}",
 							"path": [
 								"{{apiRoot}}",
-								"5fae60a5e38efd09d8557465"
+								"5fb13f1b38e6e372553473a1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE PARTIAL only lastname",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"lastname\": \"Go-SLANG\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/5fb13f1b38e6e372553473a1",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								"5fb13f1b38e6e372553473a1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE ALL",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstname\": \"Ryan\",\r\n\t\"lastname\": \"Gosling\",\r\n\t\"email\": \"ryan.gosling@actorstudio.com\",\r\n\t\"password\": \"iAmSoBeautiful\",\r\n\t\"address\" : \"Hollywood, California, US\",\r\n\t\"ip\": \"45.79.19.196\"\r\n}"
+						},
+						"url": {
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/5fb13f1b38e6e372553473a1",
+							"protocol": "{{httpType}}",
+							"host": [
+								"{{host-admin}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{apiRoot}}",
+								"5fb13f1b38e6e372553473a1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "THIRD-PARTY-API-LOCATION",
+			"description": "",
+			"item": [
+				{
+					"name": "Get entire info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"firstName\": \"John Doe\",\r\n\t\"email\": \"john.doe@recardo.com\",\r\n\t\"password\": \"changeme\",\r\n\t\"address\" : \"1 Place de Jargonnant, 1207 Genève\"\r\n}"
+						},
+						"url": {
+							"raw": "https://ipapi.co/45.79.19.196/json",
+							"protocol": "https",
+							"host": [
+								"ipapi",
+								"co"
+							],
+							"path": [
+								"45.79.19.196",
+								"json"
 							]
 						}
 					},

@@ -50,7 +50,7 @@ public class LocationFilterTest {
         // Mock actors
         when(apiClient.get(any(),any(),any())).thenReturn("CH");
 
-        // Invoke filter
+        // Invoke filter and check
         assertTrue(filter.filter(user));
     }
 
@@ -64,12 +64,12 @@ public class LocationFilterTest {
         // Mock actors
         when(apiClient.get(any(),any(),any())).thenReturn("FR");
 
-        // Invoke filter
+        // Invoke filter and check
         assertFalse(filter.filter(user));
     }
 
-    @Test(expected = UserException.class)
-    public void testFilter_whenIPUnresolvable() throws TechnicalException, BusinessException {
+    @Test
+    public void testFilter_whenIPUndefined() throws TechnicalException, BusinessException {
 
         // Forge user to filter
         User user = new User();
@@ -77,8 +77,9 @@ public class LocationFilterTest {
 
         // Mock actors
         when(messageResolver.getContent(any(),any())).thenReturn("(no matter)");
+        when(apiClient.get(any(),any(),any())).thenReturn("undefined");
 
         // Invoke filter
-        filter.filter(user);
+        assertFalse(filter.filter(user));
     }
 }

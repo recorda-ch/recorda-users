@@ -30,19 +30,18 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private RequestParser requestParser;
-
+    /**
+     * Endpoint for user creation
+     *
+     * @param user user to create
+     * @return
+     */
     @ResponseBody
     @PostMapping
-    public User create(@RequestBody User user, HttpServletRequest req) {
+    public User create(@RequestBody User user) {
 
         try {
-            // Set IP on user
-            user.setIp(requestParser.getIpAddress(req));
-
             return userService.add(user);
-
         } catch (UserException ue) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ue.getMessage(), ue);
         } catch (FeatureException ue) {
@@ -55,16 +54,21 @@ public class UserResource {
     }
 
     @ResponseBody
-    @GetMapping(path = "/{id}")
-    public User findById(@PathVariable("id") String id) throws BusinessException {
-        return userService.findById(id);
+    @PutMapping(path = "/{id}")
+    public User update(@PathVariable("id") String id, @RequestBody User user) throws BusinessException {
+        return userService.update(id,user);
     }
-
 
     @ResponseBody
     @PatchMapping(path = "/{id}")
-    public User updateName(@PathVariable("id") String id,@RequestBody HashMap<String, String> fields) throws BusinessException {
+    public User updatePartial(@PathVariable("id") String id,@RequestBody HashMap<String, String> fields) throws BusinessException {
         return userService.partialUpdate(id, fields);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/{id}")
+    public User findById(@PathVariable("id") String id) throws BusinessException {
+        return userService.findById(id);
     }
 
     @GetMapping(path = "/all")

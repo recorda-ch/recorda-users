@@ -5,6 +5,7 @@ import com.recorda.admin.users.exception.FeatureException;
 import com.recorda.admin.users.exception.TechnicalException;
 import com.recorda.admin.users.exception.UserException;
 import com.recorda.admin.users.filter.LocationFilter;
+import com.recorda.admin.users.helper.IpValidator;
 import com.recorda.admin.users.i18n.MessageResolver;
 import com.recorda.admin.users.model.User;
 import org.slf4j.Logger;
@@ -36,18 +37,43 @@ public class MongoUserService implements UserService {
     @Autowired
     private LocationFilter locationFilter;
 
+    @Autowired
+    private IpValidator ipValidator;
+
+    /**
+     * Adds a user regarding some rules :
+     *
+     * <ul>
+     *   <li>RULE 0 : a valid user IP MUST be provided</li>
+     *   <li>RULE 1 : only user requesting from Switzerland are authorized to add users</li>
+     *   <li>RULE 2 : an email is related to a single user</li>
+     * </ul>
+     *
+     * @param user new user to be created
+     * @return
+     * @throws BusinessException
+     * @throws TechnicalException
+     */
     @Override
     public User add(User user) throws BusinessException, TechnicalException {
 
         /*
-         * RULE 1 : only user requesting from Switzerland are authorized to add users
+         * Apply [RULE 0]
+         */
+        if (!ipValidator.validate(user.getIp())) {
+            String errorMessage = messageResolver.getContent("business.error.user.ip.not.valid", null);
+            throw new UserException(errorMessage);
+        }
+
+        /*
+         * Apply [RULE 1]
          */
         if (!locationFilter.filter(user)) {
             throw new FeatureException(messageResolver.getContent("business.error.user.ip.not.eligible", null));
         }
 
         /*
-         * RULE 2 : an email is related to a single user
+         * Apply [RULE 2]
          *
          * Check whether there is already a user with provided email
          */
@@ -57,12 +83,8 @@ public class MongoUserService implements UserService {
             throw new UserException(messageResolver.getContent("business.error.user.dupplicate.email", new Object[] { user.getEmail() }));
         }
 
+        logger.debug(String.format("Adding user: %s", user.toString()));
         return mongoTemplate.save(user);
-    }
-
-    @Override
-    public User update(User user) {
-        return null;
     }
 
     @Override
@@ -77,6 +99,7 @@ public class MongoUserService implements UserService {
                 });
 
         // Overall update
+        logger.debug(String.format("Adding user with id: %s", id));
         mongoTemplate.updateFirst(query, update, User.class);
 
         return findById(id);

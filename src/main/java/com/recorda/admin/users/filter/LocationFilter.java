@@ -33,13 +33,6 @@ public class LocationFilter implements GenericFilter<User> {
     @Override
     public boolean filter(User user) throws BusinessException, TechnicalException {
 
-
-        // If no IP : reject
-        if (user.getIp() == null || user.getIp().length() == 0) {
-            String errorMessage = messageResolver.getContent("business.error.user.ip.unresolvable", null);
-            throw new UserException(errorMessage);
-        }
-
         // Based on IP, forge URI for "IP Location API" country endpoint
         String finalEndpoint = apiEndpoint.concat(String.format("/%s/country",user.getIp()));
         UriComponents uri = UriComponentsBuilder.fromUriString(finalEndpoint).build();
