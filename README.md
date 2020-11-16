@@ -12,10 +12,11 @@ This repository provides a REST API micro-service to handle users for [Recardo ]
 The implementation is based on following *technical stack* :  
 - **Java 8** powered by **Spring Boot framework**  
 - Spring Boot embedded **Tomcat** server (as web container)  
-- **MongoDB** server (as the underlying datastore)  
-- ...  
-- ...  
-- **Docker Containers** (for server runtimes)  
+- a **MongoDB** server (as the underlying datastore)  
+- a **Kafka** server
+- a **Zookeeper** server
+
+MongoDB, Kafka/Zookeeper servers are provided as **Docker Containers**.  
   
 # Contents  
   
@@ -23,8 +24,9 @@ The implementation is based on following *technical stack* :
 - [SetUp](#setup)  
   - [Repository setup](#repository-setup)   
   - [Docker setup](#docker-setup)   
-- [Running a demo](#running-a-demo)  
-- [Proof of Concept](#proof-of-concept)  
+- [Running the demo](#running-the-demo)  
+- [Proof of Concept](#proof-of-concept)
+- [Stopping the demo](#stopping-the-demo)  
 - [Still missing](#still-missing...)  
   
 # Prerequisites  
@@ -49,6 +51,7 @@ Please note that you must have at least a basic knowledge regarding :
 First of all you have to get the entire GIT repository on Github  
   
 In a local Terminal :  
+
 ```bash  
 $ cd /path/to/somewhere  
 $ git clone https://github.com/recorda-ch/recorda-users.git  
@@ -56,40 +59,40 @@ $ git clone https://github.com/recorda-ch/recorda-users.git
 ```  
   
 ## Docker setup  
+
 As mentioned above this repository contains the full REST API (deployable as a micro-service) allowing the management of Users. But you will need also to get some Docker containers and start them alongside.  
   
 To retrieve the requested Docker containers , enter the following commands :  
   
 In a local Terminal :  
 - login to [Docker Hub](https://hub.docker.com/)   
+
 ```bash  
 $ docker login --username=<username>  
 (enter password)  
 ```  
-- Retrieve containers :  
+- Retrieve the 3 requested containers :  
+
 ```bash  
-$ docker pull mongo  
-$ ...  
+$ docker pull mongo
+$ docker pull wurstmeister/zookeeper
+$ docker pull wurstmeister/kafka
 ```  
   
-# Running a demo  
+# Running the demo  
   
 To run the demo, you will have to :  
 - start the Docker containers  
 - start the API (webapp runtime)  
 - use the provided Postman collection to request the API  
   
-### 1) Running the containers  
+### 1) Running the docker containers and the API  
+
 ```bash  
-$ docker-compose up -d  
-$ ...  
+$ ./startApp.sh
 ```  
-### 2) Running the application  
-```bash  
-$ cd /path/to/somewhere/recorda-users  
-$ mvn spring-boot:run  
-```  
-### 3) Launch HTTP requests on API with Postman  
+  
+### 2) Launch HTTP requests on API with Postman  
 Postman will be so far the tool for invoking the API.  
 - open Postman IDE  
 - import the provided collection (``./postman/postman-collection.json``)  
@@ -103,13 +106,20 @@ You can check the results of the demo in several ways :
 
 ### Checking results in MongoDB datastore  
 You can users in MongoDB NoSQL datastore (*Documents*) with the [Mongo Shell](https://docs.mongodb.com/manual/mongo/), directly inside its dedicated docker container as below :  
+
 ```bash  
 $ docker exec -it recardo-mongo /bin/bash  
 $ mongo  
 > use recardo;  
 > db.users.find();  
-...  
 ```  
+  
+# Stopping the demo  
+
+```bash  
+$ ./stopApp.sh
+```  
+
 
 # Still missing...
 
@@ -120,11 +130,14 @@ So far there are some lacks in this code, such as :
 - there should be instead some **converters** doing the job of mapping, based on [MapStruct](https://mapstruct.org/) for instance
 
 ### 2) No Swagger documentation !
+
 **Swagger** (so-called "**OpenAPI specification**" nowadays ) can fully document the API such as a contract.
+
 Thus :
 - this project should be swagger-annotated in order to have full Swagger documentation automatically generated with a plugin such as [Swagger Maven Plugin](https://github.com/kongchen/swagger-maven-plugin)
 
 ### 3) No validation process on fields !
+
 There should be also validation at field level based on annotations as provided by an implementation of framework [Bean Validation](https://beanvalidation.org/)
 
 
