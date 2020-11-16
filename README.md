@@ -1,8 +1,12 @@
 #  
   
-<p align="center">  
-    <strong>A micro-service application to manage Users for Recardo e-commerce platform</strong>  
-</p>  
+<p align="center">    
+	<strong>A REST API to manage Users for Recardo e-commerce platform</strong> 
+</p>
+
+<p align="center">    
+	<img src="https://raw.githubusercontent.com/recorda-ch/recorda-users/gh-pages/Search-recardo.png"/> 
+</p> 
   
 #  
   
@@ -16,8 +20,7 @@ The implementation is based on following *technical stack* :
 - a **Kafka** server
 - a **Zookeeper** server
 
-MongoDB, Kafka and Zookeeper servers are provided as **Docker Containers**.  
-  
+ 
 # Contents  
   
 - [Prerequisites](#prerequisites)  
@@ -27,10 +30,10 @@ MongoDB, Kafka and Zookeeper servers are provided as **Docker Containers**.
 - [Playing the demo](#playing-the-demo)  
 - [Proof of Concept](#proof-of-concept)
 - [Stopping the demo](#stopping-the-demo)  
-- [Still missing](#still-missing...)  
+- [What else](#what-else...)  
   
 # Prerequisites  
-Here are the pre-requisites for running the application :  
+Here are the pre-requisites for running this REST API :  
 - **Java 8 JDK** : *installed*  
 - **Docker** and **Docker Compose** distribution : *installed*  
 - **Maven** build automation tool : *installed*  
@@ -38,13 +41,20 @@ Here are the pre-requisites for running the application :
 - a personnal account on [Docker Hub](https://hub.docker.com/)   
 - a personnal account on [Github](https://github.com/)  
   
-*(The installation of these distributions is very well documented on many sites.)*  
-  
+*(The installation of these distributions is very well documented on many sites)*  
+
 Please note that you must have at least a basic knowledge regarding :  
-- the use of **Docker** commands  
-- the use of **Postman** tool to launch HTTP requests  
+- the use of **Postman** tool in order to launch HTTP requests  
+- the use of **Docker** commands
   
-  
+### OS compatibility 
+ 
+This API has been tested only under a **Linux** platform.
+So please keep in mind that so far :
+- its operation **under Mac OS is not guaranteed**
+- And **even less under Windows OS** 
+ 
+ 
 # Setup  
   
 ## Repository setup  
@@ -60,39 +70,49 @@ $ git clone https://github.com/recorda-ch/recorda-users.git
   
 ## Application setup  
 
-As mentioned above this repository contains the full REST API (deployable as a micro-service) allowing the management of Users. But you will need also to get some Docker containers and start them alongside.  
+As mentioned above this repository contains the full REST API (deployable as a micro-service) allowing the management of Users.
+This API is tightly coupled with MongoDB, Kafka and Zookeeper servers 
+which are all provided as **Docker Containers**.
 
+*Thus, you will be asked an admin password while launching scripts, why ?*
+- Because docker commands require admin privileges, unless you are able to configure *privilege escalation*
+*(but we will not dwell on [this subject](https://docs.docker.com/engine/install/linux-postinstall/) here)*  
  
-Docker containers retrieval and application build are provided in a single script : `./initApp.sh`
+Anyway: docker containers retrieval and application build are provided in a single script : `./initApp.sh`
 
-First of all, please open this script and provide your [Docker Hub](https://hub.docker.com/) username in variable `DOCKERHUB_USERNAME`.
+First of all: please open this script and provide your [Docker Hub](https://hub.docker.com/) username in variable `DOCKERHUB_USERNAME`.
+*(this is the unique intrusive action in the code - you will have to do, promised !)*
 
 Then enter the following command in a *local Terminal* :  
 
 ```bash  
 $ ./initApp.sh  
-(enter Linux sudo password, then enter DockerHub password)    
+(enter your Linux sudo password and enter your DockerHub password)    
 ```  
   
-*As mentioned this step may take a pretty much time...*
+*As mentioned this step may take a while... but finally you are able to play the demo*
   
 # Playing the demo  
   
-To run the demo, you will have to :  
+Running the demo means at least :  
 - start the Docker containers  
 - start the API (webapp runtime)  
-- use the provided Postman collection to request the API  
+- use the provided Postman collection to request the API
+- *observe what happens...*  
   
-### 1) Running the docker containers and the API  
+### 1) Start the whole application   
 
+Provided script : `./startApp.sh` starts fully the application (API and containers) :
+ 
 ```bash  
 $ ./startApp.sh
 (enter Linux sudo password)
 ```  
   
-### 2) Launch HTTP requests on API with Postman  
+### 2) Use Postman to interact with Users management API  
 
-Postman will be so far the tool for invoking the API.  
+Postman is a wonderfull tool for invoking an API.
+  
 - open Postman IDE  
 - import the provided collection (``./postman/postman-collection.json``)  
 - launch the provided HTTP requests   
@@ -114,10 +134,8 @@ You can check the results of the demo in several ways :
 You can get users in MongoDB NoSQL datastore (*Documents*) with the [Mongo Shell](https://docs.mongodb.com/manual/mongo/), directly inside its dedicated docker container as below :  
 
 ```bash  
-$ sudo docker exec -it recardo-mongo /bin/bash  
-$ mongo  
-> use recardo;  
-> db.users.find();  
+$ ./showUsersInMongo.sh
+(enter Linux sudo password)
 ```  
 
 ### 2) Checking event messages in Kafka 
@@ -125,8 +143,8 @@ $ mongo
 You can display messages sent to **Kafka topic** directly inside its dedicated docker container as below :
 
 ```bash  
-$ sudo docker exec -it recardo-kafka /bin/bash  
-$ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic recardo-users  
+$ ./showKafkaTopic.sh
+(enter Linux sudo password)
 ```
   
 Here are some exemples of messages sent by API to Kafka topic :
@@ -137,20 +155,25 @@ Here are some exemples of messages sent by API to Kafka topic :
 {"resource":"USER","id":"5fb28bfac20cf8478e24062f","source":"REST","type":"PUT","payload":{"id":null,"firstname":"Ryan","lastname":"Gosling","email":"ryan.gosling@actorstudio.com","password":"iAmSoBeautiful","address":"Hollywood, California, US","ip":"45.79.19.196"}}
 ```  
 
-
-
-
 # Stopping the demo  
+
+To stop the demo, just launch script : `./stopApp.sh` :
 
 ```bash  
 $ ./stopApp.sh
 (enter Linux sudo password)
 ```  
 
+# What else...
 
-# Still missing...
+### Project governance 
 
-So far there are some lacks in this code, such as :
+- Kanban board is here : [Users Management at Recorda](https://github.com/recorda-ch/recorda-users/projects/1) 
+
+
+### Still missing...
+
+Unfortunately there are some lacks in this code, such as :
 
 ### 1) no conversion layer between *controller* and *service* !
 - the controler (e.g: ``UserResource`` ) should not use directly objects of the model (e.g:``User``) , neither in its method signature nor in its returns
@@ -168,5 +191,13 @@ Thus :
 There should be also validation at field level based on annotations as provided by an implementation of framework [Bean Validation](https://beanvalidation.org/)
 
 
-*my2cents !*
+### 4) Some caching could have been configured
 
+- The relation *IP Source / Eligibility* could be put in a cache (managed by [Redis](https://redis.io/) caching?)
+in order to minimize redundant calls to third-party API ([IP Location API](https://ipapi.co/#api)) which could be monetized.
+
+
+
+Finally : just a matter of time !
+
+*(my2cents)*

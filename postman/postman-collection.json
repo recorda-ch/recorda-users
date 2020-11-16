@@ -10,7 +10,7 @@
 			"description": null,
 			"item": [
 				{
-					"name": "ADD a User (James Gosling) / ALLOWED",
+					"name": "ADD a User / ALLOWED (in CH)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -273,7 +273,7 @@
 							"raw": "{\r\n\t\"firstname\": \"Ryan\"\r\n}"
 						},
 						"url": {
-							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/5fb13f1b38e6e372553473a1",
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/5fb2fa7e96a77d79921e4e9a",
 							"protocol": "{{httpType}}",
 							"host": [
 								"{{host-admin}}"
@@ -281,7 +281,7 @@
 							"port": "{{port}}",
 							"path": [
 								"{{apiRoot}}",
-								"5fb13f1b38e6e372553473a1"
+								"5fb2fa7e96a77d79921e4e9a"
 							]
 						}
 					},
@@ -339,7 +339,7 @@
 							"raw": "{\r\n\t\"firstname\": \"Ryan\",\r\n\t\"lastname\": \"Gosling\",\r\n\t\"email\": \"ryan.gosling@actorstudio.com\",\r\n\t\"password\": \"iAmSoBeautiful\",\r\n\t\"address\" : \"Hollywood, California, US\",\r\n\t\"ip\": \"45.79.19.196\"\r\n}"
 						},
 						"url": {
-							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/5fb13f1b38e6e372553473a1",
+							"raw": "{{httpType}}://{{host-admin}}:{{port}}/{{apiRoot}}/5fb28bfac20cf8478e24062f",
 							"protocol": "{{httpType}}",
 							"host": [
 								"{{host-admin}}"
@@ -347,7 +347,7 @@
 							"port": "{{port}}",
 							"path": [
 								"{{apiRoot}}",
-								"5fb13f1b38e6e372553473a1"
+								"5fb28bfac20cf8478e24062f"
 							]
 						}
 					},

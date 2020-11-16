@@ -7,7 +7,7 @@
         <file>${appLogDir}/users-management.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${appLogDir}/complaint-api-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${appLogDir}/users-management-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>${maxSizeFile}</maxFileSize>
             <maxHistory>${maxDaysOfHistory}</maxHistory>
             <totalSizeCap>${maxTotalSize}</totalSizeCap>
