@@ -11,9 +11,9 @@
 #  
   
   
-This repository provides a REST API micro-service to handle users for [Recardo ](https://github.com/recorda-ch) organization.   
+This repository provides a REST API for [Recardo ](https://github.com/recorda-ch) platform **users management**.   
   
-The implementation is based on following *technical stack* :  
+This implementation of the API is based on following *technical stack* :  
 - **Java 8** powered by **Spring Boot framework**  
 - Spring Boot embedded **Tomcat** server (as web container)  
 - a **MongoDB** server (as the underlying datastore)  
@@ -30,14 +30,14 @@ The implementation is based on following *technical stack* :
 - [Playing the demo](#playing-the-demo)  
 - [Proof of Concept](#proof-of-concept)
 - [Stopping the demo](#stopping-the-demo)  
-- [What else](#what-else...)  
+- [What else ?](#what-else-?)  
   
 # Prerequisites  
 Here are the pre-requisites for running this REST API :  
 - **Java 8 JDK** : *installed*  
 - **Docker** and **Docker Compose** distribution : *installed*  
 - **Maven** build automation tool : *installed*  
-- **Postman** API client/dev tool : *installed*  
+- **Postman** IDE tool : *installed*  
 - a personnal account on [Docker Hub](https://hub.docker.com/)   
 - a personnal account on [Github](https://github.com/)  
   
@@ -95,10 +95,10 @@ $ ./initApp.sh
 # Playing the demo  
   
 Running the demo means at least :  
-- start the Docker containers  
-- start the API (webapp runtime)  
-- use the provided Postman collection to request the API
-- *observe what happens...*  
+- starting the Docker containers  
+- starting the API (webapp runtime)  
+- using the provided Postman collection to request the API
+- observing what happens... with some provided scripts   
   
 ### 1) Start the whole application   
 
@@ -111,9 +111,9 @@ $ ./startApp.sh
   
 ### 2) Use Postman to interact with Users management API  
 
-Postman is a wonderfull tool for invoking an API.
+**Postman** is a wonderfull tool for invoking an API.
   
-- open Postman IDE  
+- open **Postman IDE**  
 - import the provided collection (``./postman/postman-collection.json``)  
 - launch the provided HTTP requests   
 
@@ -164,7 +164,7 @@ $ ./stopApp.sh
 (enter Linux sudo password)
 ```  
 
-# What else...
+# What else ?
 
 ### Project governance 
 
@@ -175,29 +175,31 @@ $ ./stopApp.sh
 
 Unfortunately there are some lacks in this code, such as :
 
-### 1) no conversion layer between *controller* and *service* !
+#### 1) No Swagger documentation !
+
+**Swagger** (so-called "**OpenAPI specification**" nowadays ) can fully document the API
+and provide a good guidance in API discovering.
+
+- this project should be swagger-annotated in order to have full Swagger documentation
+ automatically generated with [SpringDoc / OpenApi 3](https://springdoc.org/#getting-started) 
+
+#### 2) no conversion layer between *controller* and *service* !
+
 - the controler (e.g: ``UserResource`` ) should not use directly objects of the model (e.g:``User``) , neither in its method signature nor in its returns
+
 - there should be instead some **converters** doing the job of mapping, based on [MapStruct](https://mapstruct.org/) for instance
 
-### 2) No Swagger documentation !
+#### 3) No validation process on fields !
 
-**Swagger** (so-called "**OpenAPI specification**" nowadays ) can fully document the API such as a contract.
-
-Thus :
-- this project should be swagger-annotated in order to have full Swagger documentation automatically generated with a plugin such as [Swagger Maven Plugin](https://github.com/kongchen/swagger-maven-plugin)
-
-### 3) No validation process on fields !
-
-There should be also validation at field level based on annotations as provided by an implementation of framework [Bean Validation](https://beanvalidation.org/)
+- There should be also validation at field level based on annotations as provided by an implementation of framework [Bean Validation](https://beanvalidation.org/)
 
 
-### 4) Some caching could have been configured
+#### 4) Some caching could have been configured
 
 - The relation *IP Source / Eligibility* could be put in a cache (managed by [Redis](https://redis.io/) caching?)
 in order to minimize redundant calls to third-party API ([IP Location API](https://ipapi.co/#api)) which could be monetized.
 
 
+Say : just a matter of time !
 
-Finally : just a matter of time !
-
-*(my2cents)*
+*Hope you will enjoy anyway.*
