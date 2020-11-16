@@ -61,7 +61,7 @@ public class MongoUserService implements UserService {
          * Apply [RULE 0]
          */
         if (!ipValidator.validate(user.getIp())) {
-            String errorMessage = messageResolver.getContent("business.error.user.ip.not.valid", null);
+            String errorMessage = messageResolver.getContent("business.error.user.ip.invalid", null);
             throw new UserException(errorMessage);
         }
 
@@ -88,7 +88,13 @@ public class MongoUserService implements UserService {
     }
 
     @Override
-    public User partialUpdate(String id, HashMap<String, String> fields) {
+    public User partialUpdate(String id, HashMap<String, String> fields) throws UserException {
+
+        if (findById(id) == null) {
+            String errorMessage = messageResolver.getContent("business.error.user.id.invalid", new Object[] { id });
+            throw new UserException(errorMessage);
+        }
+
         Query query = new Query(new Criteria("id").is(id));
         Update update = new Update();
 

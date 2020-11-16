@@ -4,8 +4,9 @@
 # --------------------------------------------
 
 # Stop/Remove docker containers
-docker-compose -f docker/docker-compose-all.yml down
+sudo docker-compose -f docker/docker-compose-all.yml down
 
 # Stop API micro-service runtime
-mvn spring-boot:stop
+export PIDOF_API=$(lsof -i -P -n | grep 8081 | awk '{ print $2 }')
+kill -9 $PIDOF_API
 

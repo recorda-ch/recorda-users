@@ -2,8 +2,7 @@ package com.recorda.admin.users.filter;
 
 import com.recorda.admin.users.exception.BusinessException;
 import com.recorda.admin.users.exception.TechnicalException;
-import com.recorda.admin.users.exception.UserException;
-import com.recorda.admin.users.filter.client.ApiClient;
+import com.recorda.admin.users.client.ApiClient;
 import com.recorda.admin.users.i18n.MessageResolver;
 import com.recorda.admin.users.model.User;
 import org.junit.Before;

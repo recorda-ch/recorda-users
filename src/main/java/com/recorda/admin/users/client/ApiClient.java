@@ -1,4 +1,4 @@
-package com.recorda.admin.users.filter.client;
+package com.recorda.admin.users.client;
 
 import com.recorda.admin.users.exception.ApiClientException;
 import org.slf4j.Logger;

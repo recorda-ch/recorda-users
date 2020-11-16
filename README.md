@@ -16,15 +16,15 @@ The implementation is based on following *technical stack* :
 - a **Kafka** server
 - a **Zookeeper** server
 
-MongoDB, Kafka/Zookeeper servers are provided as **Docker Containers**.  
+MongoDB, Kafka and Zookeeper servers are provided as **Docker Containers**.  
   
 # Contents  
   
 - [Prerequisites](#prerequisites)  
 - [SetUp](#setup)  
   - [Repository setup](#repository-setup)   
-  - [Docker setup](#docker-setup)   
-- [Running the demo](#running-the-demo)  
+  - [Application setup](#application-setup)   
+- [Playing the demo](#playing-the-demo)  
 - [Proof of Concept](#proof-of-concept)
 - [Stopping the demo](#stopping-the-demo)  
 - [Still missing](#still-missing...)  
@@ -55,31 +55,28 @@ In a local Terminal :
 ```bash  
 $ cd /path/to/somewhere  
 $ git clone https://github.com/recorda-ch/recorda-users.git  
-(enter password)  
+(enter GitHub username and/or password)  
 ```  
   
-## Docker setup  
+## Application setup  
 
 As mentioned above this repository contains the full REST API (deployable as a micro-service) allowing the management of Users. But you will need also to get some Docker containers and start them alongside.  
-  
-To retrieve the requested Docker containers , enter the following commands :  
-  
-In a local Terminal :  
-- login to [Docker Hub](https://hub.docker.com/)   
+
+ 
+Docker containers retrieval and application build are provided in a single script : `./initApp.sh`
+
+First of all, please open this script and provide your [Docker Hub](https://hub.docker.com/) username in variable `DOCKERHUB_USERNAME`.
+
+Then enter the following command in a *local Terminal* :  
 
 ```bash  
-$ docker login --username=<username>  
-(enter password)  
-```  
-- Retrieve the 3 requested containers :  
-
-```bash  
-$ docker pull mongo
-$ docker pull wurstmeister/zookeeper
-$ docker pull wurstmeister/kafka
+$ ./initApp.sh  
+(enter Linux sudo password, then enter DockerHub password)    
 ```  
   
-# Running the demo  
+*As mentioned this step may take a pretty much time...*
+  
+# Playing the demo  
   
 To run the demo, you will have to :  
 - start the Docker containers  
@@ -90,34 +87,64 @@ To run the demo, you will have to :
 
 ```bash  
 $ ./startApp.sh
+(enter Linux sudo password)
 ```  
   
 ### 2) Launch HTTP requests on API with Postman  
+
 Postman will be so far the tool for invoking the API.  
 - open Postman IDE  
 - import the provided collection (``./postman/postman-collection.json``)  
 - launch the provided HTTP requests   
+
+Please notice that you may have to copy `user id` as returned in some responses to 
+invoke further requests that require it.
+
+*(sorry for that : Postman collection should be more automatized, more scripted in the future...)*
   
 # Proof of Concept  
   
 You can check the results of the demo in several ways :  
  - in MongoDB  
- - ...  
+ - in Kafka
+ - with Postman responses  
 
-### Checking results in MongoDB datastore  
-You can users in MongoDB NoSQL datastore (*Documents*) with the [Mongo Shell](https://docs.mongodb.com/manual/mongo/), directly inside its dedicated docker container as below :  
+### 1) Checking Users status in MongoDB datastore  
+
+You can get users in MongoDB NoSQL datastore (*Documents*) with the [Mongo Shell](https://docs.mongodb.com/manual/mongo/), directly inside its dedicated docker container as below :  
 
 ```bash  
-$ docker exec -it recardo-mongo /bin/bash  
+$ sudo docker exec -it recardo-mongo /bin/bash  
 $ mongo  
 > use recardo;  
 > db.users.find();  
 ```  
+
+### 2) Checking event messages in Kafka 
+
+You can display messages sent to **Kafka topic** directly inside its dedicated docker container as below :
+
+```bash  
+$ sudo docker exec -it recardo-kafka /bin/bash  
+$ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic recardo-users  
+```
   
+Here are some exemples of messages sent by API to Kafka topic :
+
+```bash  
+{"resource":"USER","id":"5fb28bfac20cf8478e24062f","source":"REST","type":"POST","payload":{"id":"5fb28bfac20cf8478e24062f","firstname":"James","lastname":"Gosling","email":"james.gosling@java.com","password":"changeme","address":"10 Place de Jargonnant, 1207 Genève","ip":"46.14.0.12"}} 
+{"resource":"USER","id":"5fb28bfac20cf8478e24062f","source":"REST","type":"PATCH","payload":{"firstname":"Ryan"}}
+{"resource":"USER","id":"5fb28bfac20cf8478e24062f","source":"REST","type":"PUT","payload":{"id":null,"firstname":"Ryan","lastname":"Gosling","email":"ryan.gosling@actorstudio.com","password":"iAmSoBeautiful","address":"Hollywood, California, US","ip":"45.79.19.196"}}
+```  
+
+
+
+
 # Stopping the demo  
 
 ```bash  
 $ ./stopApp.sh
+(enter Linux sudo password)
 ```  
 
 
@@ -143,9 +170,3 @@ There should be also validation at field level based on annotations as provided 
 
 *my2cents !*
 
-#
- <p align="center">  
-    <strong>Enjoy !</strong>  
-</p>  
-  
-#

@@ -6,20 +6,34 @@ server:
   error:
     include-message: always
 
-# MongoDB application configuration
-mongodb:
-  users:
-    collection: users
 
-# MongoDB server configuration
+# Spring fwk configurations
 spring:
+  # MongoDB server configuration
   data:
     mongodb:
       database: recardo
       port: 27017
       host: localhost
+  # Kafka server configuration
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
-# i18n configuration
+
+# MongoDB application configuration
+mongodb:
+  users:
+    collection: users
+
+# Kafka application configuration
+kafka:
+  users:
+    topic: recardo-users
+
+# i18n application configuration
 i18n:
   locale: fr
 

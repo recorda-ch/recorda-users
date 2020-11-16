@@ -2,9 +2,7 @@ package com.recorda.admin.users.filter;
 
 import com.recorda.admin.users.exception.BusinessException;
 import com.recorda.admin.users.exception.TechnicalException;
-import com.recorda.admin.users.exception.UserException;
-import com.recorda.admin.users.filter.client.ApiClient;
-import com.recorda.admin.users.helper.RequestParser;
+import com.recorda.admin.users.client.ApiClient;
 import com.recorda.admin.users.i18n.MessageResolver;
 import com.recorda.admin.users.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Implements a filter on user location

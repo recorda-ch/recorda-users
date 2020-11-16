@@ -1,8 +1,8 @@
 package com.recorda.admin.users.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.recorda.admin.users.event.EventPublisher;
 import com.recorda.admin.users.exception.UserException;
-import com.recorda.admin.users.helper.RequestParser;
 import com.recorda.admin.users.model.User;
 import com.recorda.admin.users.service.UserService;
 import org.junit.Test;
@@ -17,13 +17,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Tests the user management endpoints as provided in ({@link UserResource}
+ *
+ * TODO: add tests concerning other endpoints (update, find, ...)
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserResource.class)
@@ -36,7 +38,7 @@ public class UserResourceTest {
     UserService userService;
 
     @MockBean
-    RequestParser requestParser;
+    EventPublisher eventPublisher;
 
     @Test
     public void testCreate_Nominal() throws Exception {
@@ -66,6 +68,10 @@ public class UserResourceTest {
                 .andExpect(jsonPath("id", is(equalTo("12345"))))
                 .andExpect(jsonPath("firstname", is(equalTo("Doug"))))
                 .andExpect(jsonPath("lastname", is(equalTo("Lea"))));
+
+        // Check Event has been sent
+        verify(eventPublisher).sendMessage(any());
+
     }
 
     @Test
@@ -88,5 +94,8 @@ public class UserResourceTest {
                 .content(jsonRequest))
                 //.andDo(print())
                 .andExpect(status().isConflict());
+
+        // Check Event has NOT been sent
+        verify(eventPublisher, never()).sendMessage(any());
     }
 }
