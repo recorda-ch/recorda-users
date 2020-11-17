@@ -138,6 +138,16 @@ $ ./showUsersInMongo.sh
 (enter Linux sudo password)
 ```  
 
+Here below an output exemple (showing a user in MongoDB *collection*) :
+
+```bash
+[Users in MongoDB datastore]
+[...]
+MongoDB server version: 4.4.1
+{ "_id" : ObjectId("5fb315914156930670d1be57"), "firstname" : "James", "lastname" : "Gosling", "email" : "james.gosling@java.com", "password" : "changeme", "address" : "10 Place de Jargonnant, 1207 Genève", "ip" : "46.14.0.12", "_class" : "com.recorda.admin.users.model.User" }
+```
+
+
 ### 2) Checking event messages in Kafka 
 
 You can display messages sent to **Kafka topic** directly inside its dedicated docker container as below :
