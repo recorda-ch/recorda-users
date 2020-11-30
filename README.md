@@ -114,7 +114,8 @@ $ ./startApp.sh
 **Postman** is a wonderfull tool for invoking an API.
   
 - open **Postman IDE**  
-- import the provided collection (``./postman/postman-collection.json``)  
+- import the provided collection (``./postman/postman-collection.json``)
+- import the provided environment (``./postman/LOCAL.postman_environment.json``)  
 - launch the provided HTTP requests   
 
 Please notice that you may have to copy `user id` as returned in some responses to 
